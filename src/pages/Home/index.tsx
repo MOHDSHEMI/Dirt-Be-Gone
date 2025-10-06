@@ -9,6 +9,7 @@ import StepVideoContent from "../../content/VideoStepsContent.json";
 
 import BeforeAfterContent from "../../content/BeforeAfterContent.json";
 import StepVideoBlock from "../../components/Steps/StepVideoBlock";
+import PricingPage from "../../components/Price";
 
 const Contact = lazy(() => import("../../components/ContactForm"));
 const MiddleBlock = lazy(() => import("../../components/MiddleBlock"));
@@ -67,6 +68,7 @@ const Home = () => {
   content={StepVideoContent.content}
   steps={StepVideoContent.steps}
 />
+<PricingPage/>
 
       <Contact
         title={ContactContent.title}

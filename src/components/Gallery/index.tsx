@@ -9,6 +9,7 @@ import {
   SectionTitle,
   SectionDescription,
 } from "./styles";
+import { motion } from "framer-motion";
 
 interface GalleryProps {
   title: string;
@@ -27,28 +28,40 @@ const GalleryBlock: FC<GalleryProps> = ({ title, content, gallery, id }) => {
       <SectionTitle>{title}</SectionTitle>
       <SectionDescription>{content}</SectionDescription>
 
-      {gallery.map((item, index) => (
-        <Row gutter={[24, 24]} justify="center" key={index}>
-          <Col xs={24} md={10} lg={8}>
-            <ImageCard>
-              <ImageLabel>Before</ImageLabel>
-              <StyledImage src={item.before} alt="Before" />
-            </ImageCard>
-          </Col>
-          <Col xs={24} md={10} lg={8}>
-            <ImageCard>
-              <ImageLabel>After</ImageLabel>
-              <StyledImage src={item.after} alt="After" />
-            </ImageCard>
-          </Col>
+      <Row gutter={[32, 48]} justify="center">
+        {gallery.map((item, index) => (
+          <Col xs={24} md={20} lg={16} key={index}>
+            <Row gutter={[24, 24]} justify="center" align="middle">
+              {/* Before */}
+              <Col xs={24} md={12}>
+                <motion.div whileHover={{ scale: 1.02 }}>
+                  <ImageCard>
+                    <ImageLabel color="#ef4444">Before</ImageLabel>
+                    <StyledImage src={item.before} alt="Before" />
+                  </ImageCard>
+                </motion.div>
+              </Col>
 
-          {item.caption && (
-            <Col span={24}>
-              <Caption>{item.caption}</Caption>
-            </Col>
-          )}
-        </Row>
-      ))}
+              {/* After */}
+              <Col xs={24} md={12}>
+                <motion.div whileHover={{ scale: 1.02 }}>
+                  <ImageCard>
+                    <ImageLabel color="#22c55e">After</ImageLabel>
+                    <StyledImage src={item.after} alt="After" />
+                  </ImageCard>
+                </motion.div>
+              </Col>
+
+              {/* Caption */}
+              {item.caption && (
+                <Col span={24}>
+                  <Caption>{item.caption}</Caption>
+                </Col>
+              )}
+            </Row>
+          </Col>
+        ))}
+      </Row>
     </GalleryWrapper>
   );
 };

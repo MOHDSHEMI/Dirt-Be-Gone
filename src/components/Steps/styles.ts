@@ -1,57 +1,63 @@
 import styled from "styled-components";
 
 export const SectionWrapper = styled.section`
-  padding: 90px 20px;
-  background-color: #eafaf1;
+  padding: 70px 16px;
+  background: linear-gradient(135deg, #eafaf1, #f9fffb);
   text-align: center;
 `;
 
 export const SectionTitle = styled.h2`
-  font-size: 2.3rem;
+  font-size: 2rem;
   font-weight: 700;
   color: #2e7d32;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
+  line-height: 1.3;
 `;
 
 export const SectionDescription = styled.p`
-  max-width: 600px;
-  margin: 0 auto 40px;
-  font-size: 1.1rem;
-  color: #4b4b4b;
+  max-width: 640px;
+  margin: 0 auto 32px;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
 `;
 
 export const StepCard = styled.div`
   background: #ffffff;
-  padding: 20px;
   border-radius: 14px;
-  box-shadow: 0 6px 20px rgba(0, 128, 0, 0.05);
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 128, 0, 0.08);
   transition: all 0.3s ease;
   text-align: center;
 
   &:hover {
-    box-shadow: 0 10px 30px rgba(0, 128, 0, 0.12);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 22px rgba(0, 128, 0, 0.15);
   }
 `;
 
 export const StepNumber = styled.div`
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  color: #43a047;
+  color: #2e7d32;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
-  margin-bottom: 8px;
+  letter-spacing: 0.6px;
+  margin-bottom: 6px;
 `;
 
 export const StepTitle = styled.h3`
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
   color: #333;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 `;
 
 export const StyledVideo = styled.video`
   width: 100%;
-  max-height: 300px;
+  aspect-ratio: 16 / 15; /* ✅ keeps height compact & consistent */
   border-radius: 10px;
-  border: 3px solid #e0f2f1;
+  border: 2px solid #e0f2f1;
   object-fit: cover;
+  display: block;
+  background: #000; /* fallback if video doesn’t load */
 `;

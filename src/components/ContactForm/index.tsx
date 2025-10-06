@@ -14,6 +14,7 @@ import {
   RadioGroup,
   FormLabel,
   Stack,
+  Divider,
   useMediaQuery,
 } from "@mui/material";
 import { withTranslation } from "react-i18next";
@@ -22,7 +23,6 @@ import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 interface IValues {
   name: string;
@@ -127,27 +127,27 @@ const Contact = ({ id, t }: ContactProps) => {
     caddy: "Brown Food Caddy",
   };
 
-  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday","Saturday"];
+  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const services = [
     { val: "oneOff", label: "One-off Clean" },
     { val: "6Clean", label: "6 Clean Package" },
     { val: "MonthlyClean", label: "Monthly Clean Package" },
-    // { val: "caddyClean", label: "Caddy Subscription" },
   ];
 
   return (
-    <Box id={id} sx={{ bgcolor: "#f5f7fa", py: 3, px: 2 }}>
+    <Box id={id} sx={{ bgcolor: "#f9fafb", py: 5, px: 2 }}>
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
       <Stack direction="row" justifyContent="center">
         <Box sx={{ width: { xs: "100%", sm: "90%", md: "70%", lg: "55%" } }}>
-          <Card sx={{ borderRadius: 3, boxShadow: 3 }}>
-            <CardContent sx={{ p: isMobile ? 2 : 3 }}>
+          <Card sx={{ borderRadius: 3, boxShadow: 4, p: 1 }}>
+            <CardContent sx={{ p: isMobile ? 2 : 4 }}>
+              {/* Title */}
               <Typography
                 variant="h5"
                 align="center"
                 fontWeight={700}
                 color={primaryColor}
-                mb={1}
+                gutterBottom
               >
                 Book Your Bin Cleaning
               </Typography>
@@ -161,35 +161,37 @@ const Contact = ({ id, t }: ContactProps) => {
               </Typography>
 
               <form onSubmit={handleSubmit}>
-                <Stack spacing={1.5}>
+                <Stack spacing={2.5}>
                   {/* Name & Phone */}
-                  <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5}>
+                  <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
                     <TextField
                       fullWidth
-                      label="Full Name"
+                      label="Full Name *"
                       name="name"
                       value={values.name}
                       onChange={handleChange}
                       error={!!errors.name}
                       helperText={errors.name}
                       size="small"
+                      variant="outlined"
                     />
                     <TextField
                       fullWidth
-                      label="Phone Number"
+                      label="Phone Number *"
                       name="telephone"
                       value={values.telephone}
                       onChange={handleChange}
                       error={!!errors.telephone}
                       helperText={errors.telephone}
                       size="small"
+                      variant="outlined"
                     />
                   </Stack>
 
                   {/* Email */}
                   <TextField
                     fullWidth
-                    label="Email"
+                    label="Email *"
                     name="email"
                     value={values.email}
                     onChange={handleChange}
@@ -198,10 +200,10 @@ const Contact = ({ id, t }: ContactProps) => {
                     size="small"
                   />
 
-                  {/* Council & Address */}
+                  {/* Council */}
                   <TextField
                     fullWidth
-                    label="Local Council"
+                    label="Local Council *"
                     name="council"
                     value={values.council}
                     onChange={handleChange}
@@ -209,9 +211,11 @@ const Contact = ({ id, t }: ContactProps) => {
                     helperText={errors.council}
                     size="small"
                   />
+
+                  {/* Address */}
                   <TextField
                     fullWidth
-                    label="Address"
+                    label="Address *"
                     name="address"
                     multiline
                     minRows={2}
@@ -222,60 +226,51 @@ const Contact = ({ id, t }: ContactProps) => {
                     size="small"
                   />
 
+                  <Divider />
+
                   {/* Bins */}
- <Box>
-  <FormLabel component="legend" sx={{ fontWeight: 600 }}>
-    Bins to Clean *
-  </FormLabel>
-  <FormGroup row>
-    {Object.keys(binLabels).map((bin) => {
-      // Assign color per bin type
-      let binColor = "";
-      switch (bin) {
-        case "green":
-          binColor = "#28a745";
-          break;
-        case "black":
-          binColor = "#343a40";
-          break;
-        case "blue":
-          binColor = "#007bff";
-          break;
-        case "caddy":
-          binColor = "#8b4513";
-          break;
-        default:
-          binColor = "#ccc";
-      }
+                  <Box>
+                    <FormLabel component="legend" sx={{ fontWeight: 600, mb: 1 }}>
+                      Bins to Clean *
+                    </FormLabel>
+                    <FormGroup row>
+                      {Object.keys(binLabels).map((bin) => {
+                        let binColor = "#ccc";
+                        if (bin === "green") binColor = "#28a745";
+                        if (bin === "black") binColor = "#343a40";
+                        if (bin === "blue") binColor = "#007bff";
+                        if (bin === "caddy") binColor = "#8b4513";
 
-      return (
-        <FormControlLabel
-          key={bin}
-          control={
-            <Checkbox
-              checked={values.bins.includes(bin)}
-              onChange={() => handleCheckboxChange(bin)}
-              icon={<DeleteOutlineIcon sx={{ color: binColor }} />}
-              checkedIcon={<DeleteOutlineIcon sx={{ color: "rgb(22,88,59)" }} />}
-              size="small"
-            />
-          }
-          label={binLabels[bin]}
-        />
-      );
-    })}
-  </FormGroup>
-  {errors.bins && (
-    <Typography color="error" variant="caption">
-      {errors.bins}
-    </Typography>
-  )}
-</Box>
+                        return (
+                          <FormControlLabel
+                            key={bin}
+                            control={
+                              <Checkbox
+                                checked={values.bins.includes(bin)}
+                                onChange={() => handleCheckboxChange(bin)}
+                                sx={{
+                                  color: binColor,
+                                  "&.Mui-checked": { color: primaryColor },
+                                }}
+                                size="small"
+                              />
+                            }
+                            label={binLabels[bin]}
+                          />
+                        );
+                      })}
+                    </FormGroup>
+                    {errors.bins && (
+                      <Typography color="error" variant="caption">
+                        {errors.bins}
+                      </Typography>
+                    )}
+                  </Box>
 
-
+                  <Divider />
 
                   {/* Collection Day & Service */}
-                  <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+                  <Stack direction={{ xs: "column", sm: "row" }} spacing={3}>
                     <Box>
                       <FormLabel sx={{ fontWeight: 600 }}>Collection Day *</FormLabel>
                       <RadioGroup
@@ -288,7 +283,14 @@ const Contact = ({ id, t }: ContactProps) => {
                           <FormControlLabel
                             key={d}
                             value={d}
-                            control={<Radio sx={{ color: primaryColor, "&.Mui-checked": { color: primaryColor } }} />}
+                            control={
+                              <Radio
+                                sx={{
+                                  color: primaryColor,
+                                  "&.Mui-checked": { color: primaryColor },
+                                }}
+                              />
+                            }
                             label={d}
                           />
                         ))}
@@ -302,12 +304,23 @@ const Contact = ({ id, t }: ContactProps) => {
 
                     <Box>
                       <FormLabel sx={{ fontWeight: 600 }}>Service *</FormLabel>
-                      <RadioGroup name="service" value={values.service} onChange={handleChange}>
+                      <RadioGroup
+                        name="service"
+                        value={values.service}
+                        onChange={handleChange}
+                      >
                         {services.map((svc) => (
                           <FormControlLabel
                             key={svc.val}
                             value={svc.val}
-                            control={<Radio sx={{ color: primaryColor, "&.Mui-checked": { color: primaryColor } }} />}
+                            control={
+                              <Radio
+                                sx={{
+                                  color: primaryColor,
+                                  "&.Mui-checked": { color: primaryColor },
+                                }}
+                              />
+                            }
                             label={svc.label}
                           />
                         ))}
@@ -320,7 +333,9 @@ const Contact = ({ id, t }: ContactProps) => {
                     </Box>
                   </Stack>
 
-                  {/* Additional Notes */}
+                  <Divider />
+
+                  {/* Extra Notes */}
                   <TextField
                     fullWidth
                     label="Additional Notes"
@@ -333,7 +348,7 @@ const Contact = ({ id, t }: ContactProps) => {
                   />
 
                   {/* Submit */}
-                  <Stack direction="row" justifyContent="center" mt={1}>
+                  <Stack direction="row" justifyContent="center" mt={2}>
                     <Button
                       type="submit"
                       variant="contained"
@@ -342,8 +357,10 @@ const Contact = ({ id, t }: ContactProps) => {
                         py: 1.2,
                         borderRadius: 2,
                         fontWeight: 600,
+                        fontSize: "0.95rem",
                         bgcolor: primaryColor,
-                        "&:hover": { bgcolor: primaryColor },
+                        "&:hover": { bgcolor: "#1a5f45" },
+                        boxShadow: 3,
                       }}
                       disabled={status === "submitting"}
                     >

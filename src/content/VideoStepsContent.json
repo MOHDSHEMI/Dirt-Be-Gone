@@ -1,21 +1,14 @@
 {
-  "title": "How It Works — 3 Simple Steps",
-  "content": "Watch how Dirt Be Gone transforms your bins in just three easy, eco-friendly steps.",
+  "title": "Customer Showcase",
+  "content": "See how Dirt Be Gone keeps bins sparkling clean in real homes and businesses.",
   "steps": [
-    {
-      "step": "Step 1",
-      "title": "We Arrive On Schedule",
-      "src": "/videos/step1.mov"
-    },
-    {
-      "step": "Step 2",
-      "title": "High-Pressure Bin Cleaning",
-      "src": "/videos/step2.mov"
-    },
-    {
-      "step": "Step 3",
-      "title": "Eco-Friendly Rinse & Done!",
-      "src": "/videos/step3.mov"
-    }
+    { "step": "1", "title": "Green Bin Deep Clean", "src": "/videos/step1.mov" },
+        { "step": "4", "title": "Curbside Bin Magic", "src":  "/videos/extra1.mp4" },
+    { "step": "5", "title": "Before & After Transformation", "src":  "/videos/extra2.mp4" },
+      { "step": "2", "title": "Commercial Bin Service", "src": "/videos/step2.mov" },
+    { "step": "6", "title": "Neighborhood Bin Care", "src": "/videos/extra3.mp4" },
+    { "step": "3", "title": "Eco-Friendly Rinse", "src": "/videos/step3.mov" }
+
   ]
 }
+
