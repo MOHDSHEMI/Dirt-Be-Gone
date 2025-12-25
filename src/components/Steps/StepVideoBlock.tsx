@@ -24,7 +24,6 @@ const StepVideoBlock: FC<StepVideoBlockProps> = ({
   id,
 }) => {
   const phoneNumber = "+447722045308";
-  const displayNumber = "+44 7722 045308";
 
   // Service data with images and descriptions
   const services = [
