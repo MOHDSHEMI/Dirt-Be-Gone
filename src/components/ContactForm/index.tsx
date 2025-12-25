@@ -19,8 +19,6 @@ import {
 } from "@mui/material";
 import { withTranslation } from "react-i18next";
 import { ContactProps } from "./types";
-import { collection, addDoc, Timestamp } from "firebase/firestore";
-import { db } from "../../firebaseConfig";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -86,11 +84,47 @@ function useForm() {
 
     setStatus("submitting");
     try {
-      await addDoc(collection(db, "bookings"), {
-        ...values,
-        createdAt: Timestamp.now(),
-      });
-      toast.success("Booking submitted successfully!");
+      // Format bins for display
+      const binLabels: Record<string, string> = {
+        green: "Green Bin",
+        black: "Black Bin",
+        blue: "Blue Bin",
+        caddy: "Brown Food Caddy",
+      };
+      const binsFormatted = values.bins.map(b => binLabels[b]).join(", ");
+
+      // Format service for display
+      const serviceLabels: Record<string, string> = {
+        oneOff: "One-off Clean",
+        "6Clean": "6 Clean Package",
+        MonthlyClean: "Monthly Clean Package",
+      };
+      const serviceFormatted = serviceLabels[values.service] || values.service;
+
+      // Create WhatsApp message
+      const message = `*New Bin Cleaning Booking*
+
+*Name:* ${values.name}
+*Phone:* ${values.telephone}
+*Email:* ${values.email}
+*Address:* ${values.address}
+*Council:* ${values.council}
+*Bins:* ${binsFormatted}
+*Collection Day:* ${values.collectionDay}
+*Service:* ${serviceFormatted}
+${values.extraInfo ? `*Additional Notes:* ${values.extraInfo}` : ''}`;
+
+      // Replace with your WhatsApp number (include country code without + sign)
+      const whatsappNumber = "447722045308"; // Example: "447123456789"
+      const encodedMessage = encodeURIComponent(message);
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+      // Open WhatsApp
+      window.open(whatsappUrl, "_blank");
+
+      toast.success("Redirecting to WhatsApp...");
+
+      // Reset form
       setValues({
         name: "",
         telephone: "",
@@ -105,7 +139,7 @@ function useForm() {
       setErrors({});
     } catch (error) {
       console.error(error);
-      toast.error("Failed to submit booking. Please try again.");
+      toast.error("Failed to open WhatsApp. Please try again.");
     } finally {
       setStatus("idle");
     }
@@ -157,7 +191,7 @@ const Contact = ({ id, t }: ContactProps) => {
                 color="text.secondary"
                 mb={3}
               >
-                Fill in the details and we’ll handle your bins professionally.
+                Fill in the details and we'll handle your bins professionally.
               </Typography>
 
               <form onSubmit={handleSubmit}>
