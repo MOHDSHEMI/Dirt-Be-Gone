@@ -23,17 +23,20 @@ const StepVideoBlock: FC<StepVideoBlockProps> = ({
   steps,
   id,
 }) => {
+  const phoneNumber = "+447722045308";
+  const displayNumber = "+44 7722 045308";
+
   // Service data with images and descriptions
   const services = [
     {
       title: "Window Cleaning",
-      description: "Crystal-clear windows inside and out. Professional streak-free cleaning for residential and commercial properties across the UK.",
-      image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80",
+      description: "Professional window cleaning services delivering crystal-clear, streak-free results. We clean all types of windows for homes and businesses, ensuring spotless glass inside and out with eco-friendly solutions.",
+      image: "/img/svg/man-doing-professional-home-cleaning-service.jpg",
     },
     {
       title: "Patio Cleaning",
-      description: "Transform your outdoor space with our high-pressure patio cleaning. Remove dirt, algae, and stains to restore your patio's original beauty.",
-      image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80",
+      description: "Expert patio cleaning using high-pressure washing to restore patios, driveways, and decking. Our powerful pressure wash removes stubborn dirt, moss, algae, and grime, bringing your outdoor spaces back to life.",
+      image: "img/svg/person-wearing-yellow-rubber-boots-with-high-pressure-water-nozzle-cleaning-dirt-tiles.jpg",
     },
   ];
 
@@ -110,11 +113,74 @@ const StepVideoBlock: FC<StepVideoBlockProps> = ({
                     fontSize: "16px",
                     lineHeight: "1.6",
                     color: "#555",
-                    margin: 0,
+                    marginBottom: "16px",
                   }}
                 >
                   {service.description}
                 </p>
+
+                {/* Call Now and WhatsApp Buttons */}
+                <div style={{ display: "flex", gap: "12px", marginTop: "16px" }}>
+                  {/* Call Now Button */}
+                  <a
+                    href={`tel:${phoneNumber}`}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      padding: "10px 16px",
+                      backgroundColor: "#18216d",
+                      color: "#fff",
+                      textDecoration: "none",
+                      borderRadius: "8px",
+                      fontSize: "14px",
+                      fontWeight: "600",
+                      transition: "background-color 0.3s ease",
+                      flex: 1,
+                      justifyContent: "center",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = "#0f1542";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "#18216d";
+                    }}
+                  >
+                    <span style={{ fontSize: "16px" }}>📞</span>
+                    Call Now
+                  </a>
+
+                  {/* WhatsApp Button */}
+                  <a
+                    href={`https://wa.me/${phoneNumber}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      padding: "10px 16px",
+                      backgroundColor: "#25D366",
+                      color: "#fff",
+                      textDecoration: "none",
+                      borderRadius: "8px",
+                      fontSize: "14px",
+                      fontWeight: "600",
+                      transition: "background-color 0.3s ease",
+                      flex: 1,
+                      justifyContent: "center",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = "#1DA851";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "#25D366";
+                    }}
+                  >
+                    <span style={{ fontSize: "16px" }}>💬</span>
+                    WhatsApp
+                  </a>
+                </div>
               </div>
             </div>
           </Col>
