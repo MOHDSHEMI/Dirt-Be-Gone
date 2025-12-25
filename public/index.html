@@ -2,49 +2,148 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-   <link rel="icon" type="image/svg+xml" href="%PUBLIC_URL%/img/svg/logo.svg" />
+    <link rel="icon" type="image/svg+xml" href="%PUBLIC_URL%/img/svg/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta name="description"
-      content="Landy is a free React landing page template designed for developers and startups." />
-    <meta name="keywords"
-      content="Landy is a free React landing page template designed for developers and startups." />
-    <meta property="og:title" content="Landy - React Template" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://landy.website/" />
-    <meta property="og:description"
-      content="Landy is a free React landing page template designed for developers and startups." />
-    <meta name="robots" content="index, follow" />
-    <meta property="og:locale" content="en_EN" />
-    <meta property="og:site_name" content="Landy" />
-    <meta property="og:url" content="https://landy.website/" />
-    <meta property="twitter:title" content="Landy - React Template" />
-    <meta property="twitter:description"
-      content="Landy is a free React landing page template designed for developers and startups." />
-    <meta property="twitter:site" content="https://landy.website/" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+    <meta name="theme-color" content="#00a86b" />
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>Dirt Be Gone</title>
+    <!-- Primary Meta Tags -->
+    <title>Dirt Be Gone | Bin, Window & Patio Cleaning Services in London</title>
+    <meta
+      name="description"
+      content="Professional cleaning services in London. Dirt Be Gone offers wheelie bin cleaning, window cleaning, and patio cleaning for homes and businesses. Eco-friendly, reliable, and affordable. Serving Greater London."
+    />
+    <meta
+      name="keywords"
+      content="cleaning services London, bin cleaning London, window cleaning London, patio cleaning London, wheelie bin cleaning, jet washing London, driveway cleaning, domestic cleaning London, commercial cleaning London, eco-friendly cleaning, pressure washing London, exterior cleaning services, Dirt Be Gone, cleaning company near me, London cleaning services, Greater London cleaners"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Dirt Be Gone" />
+    <meta name="geo.region" content="GB-LND" />
+    <meta name="geo.placename" content="London" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://dirtbegone.co.uk/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="Dirt Be Gone | Professional Cleaning Services in London" />
+    <meta
+      property="og:description"
+      content="Expert bin, window, and patio cleaning services across London. Eco-friendly solutions for homes and businesses. Book your professional clean today!"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://dirtbegone.co.uk/" />
+    <meta property="og:site_name" content="Dirt Be Gone" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:image" content="https://dirtbegone.co.uk/img/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Dirt Be Gone | Cleaning Services London" />
+    <meta
+      name="twitter:description"
+      content="Professional bin, window & patio cleaning in London. Eco-friendly, reliable service. Book now!"
+    />
+    <meta name="twitter:site" content="@dirtbegoneuk" />
+    <meta name="twitter:image" content="https://dirtbegone.co.uk/img/og-image.jpg" />
+
+    <!-- Schema.org JSON-LD for Google -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Dirt Be Gone",
+        "url": "https://dirtbegone.co.uk/",
+        "logo": "https://dirtbegone.co.uk/img/svg/logo.svg",
+        "image": "https://dirtbegone.co.uk/img/og-image.jpg",
+        "description": "Professional cleaning services in London including wheelie bin cleaning, window cleaning, and patio cleaning for residential and commercial properties.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "London",
+          "addressCountry": "GB"
+        },
+        "areaServed": {
+          "@type": "City",
+          "name": "London"
+        },
+        "telephone": "+44 20 XXXX XXXX",
+        "priceRange": "££",
+        "openingHours": "Mo-Sa 08:00-18:00",
+        "sameAs": [
+          "https://www.facebook.com/dirtbegoneuk",
+          "https://www.instagram.com/dirtbegoneuk"
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Cleaning Services",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Wheelie Bin Cleaning",
+                "description": "Professional wheelie bin cleaning and sanitisation"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Window Cleaning",
+                "description": "Residential and commercial window cleaning services"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Patio Cleaning",
+                "description": "Professional patio, driveway, and exterior cleaning"
+              }
+            }
+          ]
+        }
+      }
+    </script>
+
+    <!-- Additional Schema for Service Area -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Dirt Be Gone",
+        "serviceType": ["Bin Cleaning", "Window Cleaning", "Patio Cleaning"],
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "London"
+          }
+        ],
+        "provider": {
+          "@type": "LocalBusiness",
+          "name": "Dirt Be Gone"
+        }
+      }
+    </script>
+
+    <!-- Google Site Verification (for Search Console) -->
+    <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE" />
+
+    <!-- Google Analytics / GA4 Tracking -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-XXXXXXX");
+    </script>
   </head>
+
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>
