@@ -16,11 +16,18 @@ import {
   Stack,
   Divider,
   useMediaQuery,
+  Chip,
+  Paper,
 } from "@mui/material";
 import { withTranslation } from "react-i18next";
 import { ContactProps } from "./types";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import PhoneIcon from "@mui/icons-material/Phone";
+import EmailIcon from "@mui/icons-material/Email";
+import HomeIcon from "@mui/icons-material/Home";
+import DeleteIcon from "@mui/icons-material/Delete";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 
 interface IValues {
   name: string;
@@ -30,7 +37,6 @@ interface IValues {
   council: string;
   bins: string[];
   collectionDay: string;
-  service: string;
   extraInfo: string;
 }
 
@@ -43,7 +49,6 @@ function useForm() {
     council: "",
     bins: [],
     collectionDay: "",
-    service: "",
     extraInfo: "",
   });
 
@@ -74,11 +79,10 @@ function useForm() {
     if (!values.council.trim()) validation.council = "Required";
     if (!values.bins.length) validation.bins = "Select at least one bin";
     if (!values.collectionDay.trim()) validation.collectionDay = "Required";
-    if (!values.service.trim()) validation.service = "Required";
 
     setErrors(validation);
     if (Object.keys(validation).length > 0) {
-      toast.error("Please fill Required Fields before submitting!");
+      toast.error("Please fill all required fields before submitting!");
       return;
     }
 
@@ -93,16 +97,8 @@ function useForm() {
       };
       const binsFormatted = values.bins.map(b => binLabels[b]).join(", ");
 
-      // Format service for display
-      const serviceLabels: Record<string, string> = {
-        oneOff: "One-off Clean",
-        "6Clean": "6 Clean Package",
-        MonthlyClean: "Monthly Clean Package",
-      };
-      const serviceFormatted = serviceLabels[values.service] || values.service;
-
       // Create WhatsApp message
-      const message = `*New Bin Cleaning Booking*
+      const message = `*New Monthly Bin Cleaning Booking*
 
 *Name:* ${values.name}
 *Phone:* ${values.telephone}
@@ -111,11 +107,11 @@ function useForm() {
 *Council:* ${values.council}
 *Bins:* ${binsFormatted}
 *Collection Day:* ${values.collectionDay}
-*Service:* ${serviceFormatted}
+*Service:* Monthly Clean Package
 ${values.extraInfo ? `*Additional Notes:* ${values.extraInfo}` : ''}`;
 
       // Replace with your WhatsApp number (include country code without + sign)
-      const whatsappNumber = "447722045308"; // Example: "447123456789"
+      const whatsappNumber = "447722045308";
       const encodedMessage = encodeURIComponent(message);
       const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
@@ -133,7 +129,6 @@ ${values.extraInfo ? `*Additional Notes:* ${values.extraInfo}` : ''}`;
         council: "",
         bins: [],
         collectionDay: "",
-        service: "",
         extraInfo: "",
       });
       setErrors({});
@@ -151,260 +146,425 @@ ${values.extraInfo ? `*Additional Notes:* ${values.extraInfo}` : ''}`;
 const Contact = ({ id, t }: ContactProps) => {
   const { values, errors, handleChange, handleCheckboxChange, handleSubmit, status } = useForm();
   const isMobile = useMediaQuery("(max-width:600px)");
+  const isTablet = useMediaQuery("(max-width:960px)");
 
-  const primaryColor = "rgb(22, 88, 59)";
+  const primaryColor = "#16583b";
+  const primaryLight = "#1a6b47";
+  const primaryDark = "#0f3d29";
 
-  const binLabels: Record<string, string> = {
-    green: "Green Bin",
-    black: "Black Bin",
-    blue: "Blue Bin",
-    caddy: "Brown Food Caddy",
-  };
-
-  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  const services = [
-    { val: "oneOff", label: "One-off Clean" },
-    { val: "6Clean", label: "6 Clean Package" },
-    { val: "MonthlyClean", label: "Monthly Clean Package" },
+  const binOptions = [
+    { key: "green", label: "Green Bin", color: "#28a745", icon: "🗑️" },
+    { key: "black", label: "Black Bin", color: "#343a40", icon: "🗑️" },
+    { key: "blue", label: "Blue Bin", color: "#007bff", icon: "♻️" },
+    { key: "caddy", label: "Brown Food Caddy", color: "#8b4513", icon: "🥫" },
   ];
 
+  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
   return (
-    <Box id={id} sx={{ bgcolor: "#f9fafb", py: 5, px: 2 }}>
+    <Box id={id} sx={{ bgcolor: "#f5f7fa", py: { xs: 3, sm: 5, md: 6 }, px: { xs: 2, sm: 3 } }}>
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
+
       <Stack direction="row" justifyContent="center">
-        <Box sx={{ width: { xs: "100%", sm: "90%", md: "70%", lg: "55%" } }}>
-          <Card sx={{ borderRadius: 3, boxShadow: 4, p: 1 }}>
-            <CardContent sx={{ p: isMobile ? 2 : 4 }}>
-              {/* Title */}
-              <Typography
-                variant="h5"
-                align="center"
-                fontWeight={700}
-                color={primaryColor}
-                gutterBottom
-              >
-                Book Your Bin Cleaning
-              </Typography>
-              <Typography
-                variant="body2"
-                align="center"
-                color="text.secondary"
-                mb={3}
-              >
-                Fill in the details and we'll handle your bins professionally.
-              </Typography>
+        <Box sx={{ width: { xs: "100%", sm: "95%", md: "85%", lg: "70%", xl: "60%" }, maxWidth: 900 }}>
+          {/* Header Section */}
+          <Paper
+            elevation={0}
+            sx={{
+              bgcolor: primaryColor,
+              borderRadius: { xs: 2, sm: 3 },
+              p: { xs: 3, sm: 4 },
+              mb: 2,
+              background: `linear-gradient(135deg, ${primaryColor} 0%, ${primaryDark} 100%)`,
+            }}
+          >
+            <Typography
+              variant={isMobile ? "h5" : "h4"}
+              align="center"
+              fontWeight={700}
+              color="white"
+              gutterBottom
+            >
+              Monthly Bin Cleaning Service
+            </Typography>
+            <Typography
+              variant="body1"
+              align="center"
+              color="rgba(255,255,255,0.95)"
+              sx={{ maxWidth: 600, mx: "auto", fontSize: { xs: "0.9rem", sm: "1rem" } }}
+            >
+              Professional bin cleaning delivered monthly. Keep your bins fresh and hygienic all year round.
+            </Typography>
+          </Paper>
 
+          <Card
+            sx={{
+              borderRadius: { xs: 2, sm: 3 },
+              boxShadow: "0 8px 32px rgba(0,0,0,0.08)",
+              overflow: "hidden",
+            }}
+          >
+            <CardContent sx={{ p: { xs: 2.5, sm: 4, md: 5 } }}>
               <form onSubmit={handleSubmit}>
-                <Stack spacing={2.5}>
-                  {/* Name & Phone */}
-                  <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-                    <TextField
-                      fullWidth
-                      label="Full Name *"
-                      name="name"
-                      value={values.name}
-                      onChange={handleChange}
-                      error={!!errors.name}
-                      helperText={errors.name}
-                      size="small"
-                      variant="outlined"
-                    />
-                    <TextField
-                      fullWidth
-                      label="Phone Number *"
-                      name="telephone"
-                      value={values.telephone}
-                      onChange={handleChange}
-                      error={!!errors.telephone}
-                      helperText={errors.telephone}
-                      size="small"
-                      variant="outlined"
-                    />
-                  </Stack>
-
-                  {/* Email */}
-                  <TextField
-                    fullWidth
-                    label="Email *"
-                    name="email"
-                    value={values.email}
-                    onChange={handleChange}
-                    error={!!errors.email}
-                    helperText={errors.email}
-                    size="small"
-                  />
-
-                  {/* Council */}
-                  <TextField
-                    fullWidth
-                    label="Local Council *"
-                    name="council"
-                    value={values.council}
-                    onChange={handleChange}
-                    error={!!errors.council}
-                    helperText={errors.council}
-                    size="small"
-                  />
-
-                  {/* Address */}
-                  <TextField
-                    fullWidth
-                    label="Address *"
-                    name="address"
-                    multiline
-                    minRows={2}
-                    value={values.address}
-                    onChange={handleChange}
-                    error={!!errors.address}
-                    helperText={errors.address}
-                    size="small"
-                  />
-
-                  <Divider />
-
-                  {/* Bins */}
+                <Stack spacing={3}>
+                  {/* Contact Information Section */}
                   <Box>
-                    <FormLabel component="legend" sx={{ fontWeight: 600, mb: 1 }}>
-                      Bins to Clean *
-                    </FormLabel>
-                    <FormGroup row>
-                      {Object.keys(binLabels).map((bin) => {
-                        let binColor = "#ccc";
-                        if (bin === "green") binColor = "#28a745";
-                        if (bin === "black") binColor = "#343a40";
-                        if (bin === "blue") binColor = "#007bff";
-                        if (bin === "caddy") binColor = "#8b4513";
+                    <Typography
+                      variant="h6"
+                      fontWeight={600}
+                      color={primaryColor}
+                      mb={2.5}
+                      sx={{ fontSize: { xs: "1.1rem", sm: "1.25rem" } }}
+                    >
+                      Contact Information
+                    </Typography>
 
-                        return (
+                    <Stack spacing={2.5}>
+                      <TextField
+                        fullWidth
+                        label="Full Name"
+                        name="name"
+                        value={values.name}
+                        onChange={handleChange}
+                        error={!!errors.name}
+                        helperText={errors.name}
+                        required
+                        variant="outlined"
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            "&:hover fieldset": { borderColor: primaryLight },
+                            "&.Mui-focused fieldset": { borderColor: primaryColor },
+                          },
+                        }}
+                      />
+
+                      <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+                        <TextField
+                          fullWidth
+                          label="Phone Number"
+                          name="telephone"
+                          value={values.telephone}
+                          onChange={handleChange}
+                          error={!!errors.telephone}
+                          helperText={errors.telephone}
+                          required
+                          InputProps={{
+                            startAdornment: <PhoneIcon sx={{ mr: 1, color: "text.secondary" }} />,
+                          }}
+                          sx={{
+                            "& .MuiOutlinedInput-root": {
+                              "&:hover fieldset": { borderColor: primaryLight },
+                              "&.Mui-focused fieldset": { borderColor: primaryColor },
+                            },
+                          }}
+                        />
+                        <TextField
+                          fullWidth
+                          label="Email Address"
+                          name="email"
+                          type="email"
+                          value={values.email}
+                          onChange={handleChange}
+                          error={!!errors.email}
+                          helperText={errors.email}
+                          required
+                          InputProps={{
+                            startAdornment: <EmailIcon sx={{ mr: 1, color: "text.secondary" }} />,
+                          }}
+                          sx={{
+                            "& .MuiOutlinedInput-root": {
+                              "&:hover fieldset": { borderColor: primaryLight },
+                              "&.Mui-focused fieldset": { borderColor: primaryColor },
+                            },
+                          }}
+                        />
+                      </Stack>
+                    </Stack>
+                  </Box>
+
+                  <Divider sx={{ my: 1 }} />
+
+                  {/* Location Section */}
+                  <Box>
+                    <Typography
+                      variant="h6"
+                      fontWeight={600}
+                      color={primaryColor}
+                      mb={2.5}
+                      sx={{ fontSize: { xs: "1.1rem", sm: "1.25rem" } }}
+                    >
+                      Service Location
+                    </Typography>
+
+                    <Stack spacing={2.5}>
+                      <TextField
+                        fullWidth
+                        label="Local Council"
+                        name="council"
+                        value={values.council}
+                        onChange={handleChange}
+                        error={!!errors.council}
+                        helperText={errors.council || "e.g., Westminster, Camden, etc."}
+                        required
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            "&:hover fieldset": { borderColor: primaryLight },
+                            "&.Mui-focused fieldset": { borderColor: primaryColor },
+                          },
+                        }}
+                      />
+
+                      <TextField
+                        fullWidth
+                        label="Full Address"
+                        name="address"
+                        multiline
+                        rows={3}
+                        value={values.address}
+                        onChange={handleChange}
+                        error={!!errors.address}
+                        helperText={errors.address || "Include street, city, and postcode"}
+                        required
+                        InputProps={{
+                          startAdornment: (
+                            <HomeIcon
+                              sx={{
+                                mr: 1,
+                                color: "text.secondary",
+                                alignSelf: "flex-start",
+                                mt: 1.5,
+                              }}
+                            />
+                          ),
+                        }}
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            "&:hover fieldset": { borderColor: primaryLight },
+                            "&.Mui-focused fieldset": { borderColor: primaryColor },
+                          },
+                        }}
+                      />
+                    </Stack>
+                  </Box>
+
+                  <Divider sx={{ my: 1 }} />
+
+                  {/* Bins Selection Section */}
+                  <Box>
+                    <Stack direction="row" alignItems="center" spacing={1} mb={2}>
+                      <DeleteIcon sx={{ color: primaryColor }} />
+                      <Typography
+                        variant="h6"
+                        fontWeight={600}
+                        color={primaryColor}
+                        sx={{ fontSize: { xs: "1.1rem", sm: "1.25rem" } }}
+                      >
+                        Select Bins to Clean
+                      </Typography>
+                    </Stack>
+
+                    <Stack spacing={1.5}>
+                      {binOptions.map((bin) => (
+                        <Paper
+                          key={bin.key}
+                          elevation={values.bins.includes(bin.key) ? 3 : 0}
+                          sx={{
+                            p: 1.5,
+                            border: values.bins.includes(bin.key)
+                              ? `2px solid ${primaryColor}`
+                              : "2px solid #e0e0e0",
+                            borderRadius: 2,
+                            transition: "all 0.2s",
+                            cursor: "pointer",
+                            bgcolor: values.bins.includes(bin.key) ? "#f0f7f4" : "white",
+                            "&:hover": {
+                              borderColor: primaryLight,
+                              boxShadow: 2,
+                            },
+                          }}
+                          onClick={() => handleCheckboxChange(bin.key)}
+                        >
                           <FormControlLabel
-                            key={bin}
                             control={
                               <Checkbox
-                                checked={values.bins.includes(bin)}
-                                onChange={() => handleCheckboxChange(bin)}
+                                checked={values.bins.includes(bin.key)}
+                                onChange={() => handleCheckboxChange(bin.key)}
                                 sx={{
-                                  color: binColor,
+                                  color: bin.color,
                                   "&.Mui-checked": { color: primaryColor },
                                 }}
-                                size="small"
                               />
                             }
-                            label={binLabels[bin]}
+                            label={
+                              <Stack direction="row" alignItems="center" spacing={1.5}>
+                                <Typography fontSize="1.5rem">{bin.icon}</Typography>
+                                <Typography fontWeight={500}>{bin.label}</Typography>
+                              </Stack>
+                            }
+                            sx={{ m: 0, width: "100%" }}
                           />
-                        );
-                      })}
-                    </FormGroup>
+                        </Paper>
+                      ))}
+                    </Stack>
+
                     {errors.bins && (
-                      <Typography color="error" variant="caption">
+                      <Typography color="error" variant="caption" sx={{ mt: 1, display: "block" }}>
                         {errors.bins}
                       </Typography>
                     )}
                   </Box>
 
-                  <Divider />
+                  <Divider sx={{ my: 1 }} />
 
-                  {/* Collection Day & Service */}
-                  <Stack direction={{ xs: "column", sm: "row" }} spacing={3}>
-                    <Box>
-                      <FormLabel sx={{ fontWeight: 600 }}>Collection Day *</FormLabel>
-                      <RadioGroup
-                        row
-                        name="collectionDay"
-                        value={values.collectionDay}
-                        onChange={handleChange}
+                  {/* Collection Day Section */}
+                  <Box>
+                    <Stack direction="row" alignItems="center" spacing={1} mb={2}>
+                      <CalendarTodayIcon sx={{ color: primaryColor }} />
+                      <Typography
+                        variant="h6"
+                        fontWeight={600}
+                        color={primaryColor}
+                        sx={{ fontSize: { xs: "1.1rem", sm: "1.25rem" } }}
                       >
-                        {days.map((d) => (
-                          <FormControlLabel
-                            key={d}
-                            value={d}
-                            control={
-                              <Radio
-                                sx={{
-                                  color: primaryColor,
-                                  "&.Mui-checked": { color: primaryColor },
-                                }}
-                              />
-                            }
-                            label={d}
-                          />
+                        Bin Collection Day
+                      </Typography>
+                    </Stack>
+
+                    <RadioGroup
+                      name="collectionDay"
+                      value={values.collectionDay}
+                      onChange={handleChange}
+                    >
+                      <Stack spacing={1}>
+                        {days.map((day) => (
+                          <Paper
+                            key={day}
+                            elevation={values.collectionDay === day ? 3 : 0}
+                            sx={{
+                              p: 1.5,
+                              border: values.collectionDay === day
+                                ? `2px solid ${primaryColor}`
+                                : "2px solid #e0e0e0",
+                              borderRadius: 2,
+                              transition: "all 0.2s",
+                              cursor: "pointer",
+                              bgcolor: values.collectionDay === day ? "#f0f7f4" : "white",
+                              "&:hover": {
+                                borderColor: primaryLight,
+                                boxShadow: 2,
+                              },
+                            }}
+                            onClick={() => handleChange({ target: { name: "collectionDay", value: day } } as any)}
+                          >
+                            <FormControlLabel
+                              value={day}
+                              control={
+                                <Radio
+                                  sx={{
+                                    color: primaryColor,
+                                    "&.Mui-checked": { color: primaryColor },
+                                  }}
+                                />
+                              }
+                              label={
+                                <Typography fontWeight={500} fontSize={{ xs: "0.95rem", sm: "1rem" }}>
+                                  {day}
+                                </Typography>
+                              }
+                              sx={{ m: 0, width: "100%" }}
+                            />
+                          </Paper>
                         ))}
-                      </RadioGroup>
-                      {errors.collectionDay && (
-                        <Typography color="error" variant="caption">
-                          {errors.collectionDay}
-                        </Typography>
-                      )}
-                    </Box>
+                      </Stack>
+                    </RadioGroup>
 
-                    <Box>
-                      <FormLabel sx={{ fontWeight: 600 }}>Service *</FormLabel>
-                      <RadioGroup
-                        name="service"
-                        value={values.service}
-                        onChange={handleChange}
-                      >
-                        {services.map((svc) => (
-                          <FormControlLabel
-                            key={svc.val}
-                            value={svc.val}
-                            control={
-                              <Radio
-                                sx={{
-                                  color: primaryColor,
-                                  "&.Mui-checked": { color: primaryColor },
-                                }}
-                              />
-                            }
-                            label={svc.label}
-                          />
-                        ))}
-                      </RadioGroup>
-                      {errors.service && (
-                        <Typography color="error" variant="caption">
-                          {errors.service}
-                        </Typography>
-                      )}
-                    </Box>
-                  </Stack>
+                    {errors.collectionDay && (
+                      <Typography color="error" variant="caption" sx={{ mt: 1, display: "block" }}>
+                        {errors.collectionDay}
+                      </Typography>
+                    )}
+                  </Box>
 
-                  <Divider />
+                  <Divider sx={{ my: 1 }} />
 
-                  {/* Extra Notes */}
+                  {/* Service Package Info */}
+                  <Paper
+                    sx={{
+                      p: 2.5,
+                      bgcolor: "#f0f7f4",
+                      borderLeft: `4px solid ${primaryColor}`,
+                      borderRadius: 2,
+                    }}
+                  >
+                    <Typography variant="subtitle1" fontWeight={600} color={primaryColor} gutterBottom>
+                      📦 Monthly Clean Package
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Your bins will be professionally cleaned every month, ensuring they stay fresh, hygienic, and odor-free year-round.
+                    </Typography>
+                  </Paper>
+
+                  {/* Additional Notes */}
                   <TextField
                     fullWidth
-                    label="Additional Notes"
+                    label="Additional Notes (Optional)"
                     name="extraInfo"
                     multiline
-                    minRows={2}
+                    rows={3}
                     value={values.extraInfo}
                     onChange={handleChange}
-                    size="small"
+                    placeholder="Any special instructions or requirements..."
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        "&:hover fieldset": { borderColor: primaryLight },
+                        "&.Mui-focused fieldset": { borderColor: primaryColor },
+                      },
+                    }}
                   />
 
-                  {/* Submit */}
-                  <Stack direction="row" justifyContent="center" mt={2}>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      sx={{
-                        px: 4,
-                        py: 1.2,
-                        borderRadius: 2,
-                        fontWeight: 600,
-                        fontSize: "0.95rem",
-                        bgcolor: primaryColor,
-                        "&:hover": { bgcolor: "#1a5f45" },
-                        boxShadow: 3,
-                      }}
-                      disabled={status === "submitting"}
-                    >
-                      {status === "submitting" ? (
-                        <CircularProgress size={22} color="inherit" />
-                      ) : (
-                        t("Submit Booking")
-                      )}
-                    </Button>
-                  </Stack>
+                  {/* Submit Button */}
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    fullWidth
+                    disabled={status === "submitting"}
+                    sx={{
+                      py: { xs: 1.5, sm: 1.8 },
+                      mt: 2,
+                      borderRadius: 2,
+                      fontWeight: 700,
+                      fontSize: { xs: "1rem", sm: "1.1rem" },
+                      textTransform: "none",
+                      bgcolor: primaryColor,
+                      background: `linear-gradient(135deg, ${primaryColor} 0%, ${primaryDark} 100%)`,
+                      "&:hover": {
+                        bgcolor: primaryDark,
+                        background: `linear-gradient(135deg, ${primaryLight} 0%, ${primaryColor} 100%)`,
+                        boxShadow: 6,
+                      },
+                      boxShadow: 4,
+                      transition: "all 0.3s",
+                    }}
+                  >
+                    {status === "submitting" ? (
+                      <Stack direction="row" alignItems="center" spacing={2}>
+                        <CircularProgress size={24} color="inherit" />
+                        <Typography>Processing...</Typography>
+                      </Stack>
+                    ) : (
+                      "Submit Booking"
+                    )}
+                  </Button>
+
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    align="center"
+                    sx={{ pt: 1, display: "block" }}
+                  >
+                    We respect your privacy and will only use your information to provide our service.
+                  </Typography>
                 </Stack>
               </form>
             </CardContent>
